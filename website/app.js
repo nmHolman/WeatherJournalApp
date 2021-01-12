@@ -1,10 +1,10 @@
 /* Global Variables */
 const weatherAPIUrl = 'http://api.openweathermap.org/data/2.5/weather?';
-const weatherAPIKey = '52e6c7689672cdc242b9dcee26ee3094';
+const weatherAPIKey = keys.WEATHER_API;
 
 // Create a new date instance dynamically with JS
 let d = new Date();
-let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
 
 // Get data from Weather API
 const getData = async (url, key) => {
@@ -16,10 +16,9 @@ const getData = async (url, key) => {
     try {
         const allData = await request.json();
         const temp = allData.main['temp'];
-        
-        return temp;        
+        return temp;
 
-    } catch(error) {
+    } catch (error) {
         console.log("error", error);
     }
 };
