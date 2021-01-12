@@ -9,22 +9,25 @@ let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 // Get data from Weather API
 const getData = async (url, key) => {
     let zip = document.getElementById('zip').value;
-    let fullURL = `${url}q=${zip}&appid=${key}`
+    let fullURL = `${url}q=${zip}&units=imperial&appid=${key}`
 
     const request = await fetch(fullURL);
 
     try {
-        const allData = await request.json()
-        console.log(allData)
+        const allData = await request.json();
+        const temp = allData.main['temp'];
         
+        return temp;        
+
     } catch(error) {
         console.log("error", error);
     }
 };
 
 
-function doThing(e) {
-    getData(weatherAPIUrl, weatherAPIKey)
+async function doThing(e) {
+    const temp = await getData(weatherAPIUrl, weatherAPIKey);
+    console.log(`Current temp: ${temp}`)
 }
 
 // Click Event
