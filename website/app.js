@@ -4,7 +4,7 @@ const weatherAPIKey = keys.WEATHER_API;
 
 // Create a new date instance dynamically with JS
 let d = new Date();
-let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
+let newDate = (d.getMonth() + 1) + '.' + d.getDate() + '.' + d.getFullYear();
 
 // Get data from Weather API
 const getData = async (url, key) => {
@@ -23,11 +23,68 @@ const getData = async (url, key) => {
     }
 };
 
+// Asnyc Post
+const postData = async (url, data) => {
 
+    const response = await fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify(data),
+    });
+
+    try {
+        const newData = await response.json();
+        return newData;
+    } catch (error) {
+        console.log("error", error);
+    }
+};
+
+// Async GET
+const retrieveData = async (url) => {
+    const request = await fetch(url);
+    try {
+        const allData = await request.json()
+
+        lastDate = allData.slice(-1)[0].date;
+        lastTemp = allData.slice(-1)[0].temp;
+        lastFeeling = allData.slice(-1)[0].feelings;
+
+        document.getElementById('date').innerHTML = `<p>  Date <br/><span id='result'>${lastDate}</span></p>`;
+        document.getElementById('temp').innerHTML = `<p>Temperature <br/><span id='result'>${lastTemp}&#176;F<span></p>`;
+        document.getElementById('content').innerHTML = `<p>Feelings <br/><span id='result'>${lastFeeling}<span></p>`;
+
+    } catch (error) {
+        console.log("error", error);
+    }
+};
+
+// POST GET
+function postGET(d) {
+    postData('/add', d).then(retrieveData('/data'));
+}
+
+// Click Event Function
 async function doThing(e) {
     const temp = await getData(weatherAPIUrl, weatherAPIKey);
-    console.log(`Current temp: ${temp}`)
+    const feelings = document.getElementById('feelings').value;
+
+    const newData = {
+        date: newDate,
+        temp: temp,
+        feelings: feelings,
+    };
+
+    postGET(newData);
+
+    document.getElementById('feelings').value = '';
+    document.getElementById('zip').value = '';
 }
+
 
 // Click Event
 document.getElementById('generate').addEventListener('click', doThing);

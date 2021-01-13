@@ -29,12 +29,14 @@ app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
 
-// GET Route
-app.get('/data', (req, res) => {
-    res.send(projectData);
+// POST Route
+const data = []
+
+app.post('/add', (req, res) => {
+    data.push(req.body);
 });
 
-// POST Route
-app.post('/add', (req, res) => {
-    projectData.push(req.body);
+// GET Route
+app.get('/data', (req, res) => {
+    res.send(data);
 });
