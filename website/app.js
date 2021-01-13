@@ -54,7 +54,7 @@ const retrieveData = async (url) => {
         lastTemp = allData.slice(-1)[0].temp;
         lastFeeling = allData.slice(-1)[0].feelings;
 
-        document.getElementById('date').innerHTML = `<p>  Date <br/><span id='result'>${lastDate}</span></p>`;
+        document.getElementById('date').innerHTML = `<p>Date <br/><span id='result'>${lastDate}</span></p>`;
         document.getElementById('temp').innerHTML = `<p>Temperature <br/><span id='result'>${lastTemp}&#176;F<span></p>`;
         document.getElementById('content').innerHTML = `<p>Feelings <br/><span id='result'>${lastFeeling}<span></p>`;
 
@@ -69,7 +69,7 @@ function postGET(d) {
 }
 
 // Click Event Function
-async function doThing(e) {
+async function generateEntry(e) {
     const temp = await getData(weatherAPIUrl, weatherAPIKey);
     const feelings = document.getElementById('feelings').value;
 
@@ -77,7 +77,7 @@ async function doThing(e) {
         date: newDate,
         temp: temp,
         feelings: feelings,
-    };
+    }; 
 
     postGET(newData);
 
@@ -87,4 +87,4 @@ async function doThing(e) {
 
 
 // Click Event
-document.getElementById('generate').addEventListener('click', doThing);
+document.getElementById('generate').addEventListener('click', generateEntry);
